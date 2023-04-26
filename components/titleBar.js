@@ -5,7 +5,7 @@ export default function TitleBar() {
     return (
         <div className={styles.TitleBar}>
             <NavBar/>
-            <h1>Big Bank of Butt</h1>
+            <h1>BIG BANK OF BUTT</h1>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 .container {
-    padding: 0 2rem;
+    /*Changed the padding from '0 2rem' to '0' in order to get the TitleBar to full width of page*/
+    padding: 0;
     background-image: url("../public/background.svg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -176,15 +177,28 @@
     align-items: center;
 }
 
+
 .TitleBar {
     /*TODO style the TitleBar*/
     display: flex;
     align-items: center;
+    background-color: #588CB2;
+    width: 100vw;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+}
+
+.TitleBar h1 {
+    color: white;
+    font-style: italic;
+    font-family: 'Inter', sans-serif;
+    margin-left: 2rem;
+    padding-top: 5px;
 }
 
 .HamburgerButton {
     width: 35px;
     height: 5px;
     background-color: black;
-    margin: 6px 0;
+    margin: 7px 0;
 }

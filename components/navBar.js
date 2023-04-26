@@ -9,14 +9,15 @@ export default function NavBar () {
         setWid('0%')
     }
     return (
+        /* Should I just create a css class for buttons? Seems like it would take space and be redundant if only using here */
         <div>
-            <button onClick={() => openNavBar()}>
+            <button onClick={() => openNavBar()} style={{backgroundColor: "transparent", borderColor: "transparent"}}>
                 <div className={styles.HamburgerButton}></div>
                 <div className={styles.HamburgerButton}></div>
                 <div className={styles.HamburgerButton}></div>
             </button>
             <div className={styles.NavBar} style={{width: wid}}>
-                <button onClick={() => closeNavBar()}>X GOES HERE</button>
+                <button onClick={() => closeNavBar()} style={{backgroundColor: "transparent", borderColor: "transparent"}}>X GOES HERE</button>
                 <a href="/home">Account Details</a>
                 <a href="/transactions">Transactions</a>
                 <a href="/transfer">Transfer</a>
