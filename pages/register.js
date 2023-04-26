@@ -50,7 +50,7 @@ export default function register() {
                         </form>
                     </a>
 
-                    <a href="/login" className={styles.card}>
+                    <a href="/Login" className={styles.card}>
                         <h2>Login &rarr;</h2>
                         <p>Already have an account? Click here!</p>
                     </a>

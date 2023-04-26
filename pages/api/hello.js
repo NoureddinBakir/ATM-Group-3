@@ -10,3 +10,10 @@ export default function handler(req, res) {
 // API Methods -  GET, PATCH, PUT, DELETE
 // /users - GET, PATCH, DELETE
 // localhost:8080/users/[userID]
+
+
+// GET /users/[userID]
+// CRUD - Create, UPdate, Delete
+// API Methods -  GET, PATCH, PUT, DELETE
+// /users - GET, PATCH, DELETE
+// localhost:8080/users/[userID]
