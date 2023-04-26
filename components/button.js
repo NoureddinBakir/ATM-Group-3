@@ -1,15 +1,17 @@
-// Button component that uses Bootstrap styles
+import styles from '../styles/Home.module.css';
+
 export default function Button(
-    {text, onClick}
+    {type, text, onClick}
 ) {
-            // {/*Button needs to be big, blue, and with outline of white border*/}
-    return(
-        <button
-            type="button"
+    // {/*Button needs to be big, blue, and with outline of white border*/}
+    return (
+        <div
             onClick={onClick}
-            class="PrimaryButton"
+            className={
+                type === "primary" ? styles.primaryButton : styles.secondaryButton
+            }
         >
             {text}
-        </button>
+        </div>
     );
 }
