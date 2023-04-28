@@ -1,5 +1,8 @@
+/* Imported to match the NavBarButton text from figma */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600&display=swap');
+
 .container {
-    padding-top: 3rem;
+    padding: 0;
     background-image: url("../public/background.svg");
     background-repeat: no-repeat;
     background-size: cover;
@@ -260,42 +263,81 @@
     overflow: hidden;
 }
 
-.NavBar a{
-    float: left;
-    display: block;
-    color: #5f859d;
-    text-align: center;
-    padding: 14px 16px;
+.NavBar {
+    height: 100%;
+    width: 25%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color:#FFFFFF;
+    transition: .5s ease;
+    overflow-x: hidden;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.NavBarClose {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border-color: transparent;
+    color: black;
+    font-size: 20px;
+    cursor: pointer;
+    margin:.125rem;
+}
+
+.NavBarButton {
+    display: flex;
+    align-items: center;
+    margin: 15px;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.NavBarButton:last-child {
+    margin-top: auto;
+}
+
+.NavBarButton a {
+    font-family: 'Work Sans', sans-serif;
+    font-size: 18px;
     text-decoration: none;
-    font-size: 1.2rem;
-    font-family: 'Roboto', sans-serif;
+    color: black;
+    text-align: center;
+    width: 100%;
 }
 
-.NavBar a:hover {
-    background-color: #5f859d;
-    color: #DEECF5;
+.NavBarButton img {
+    margin-right: 10px;
+    margin-left: 20px;
+    width: 30px;
+    height: 30px;
 }
 
-.NavBar a.active {
-    background-color: #DEECF5;
-    color: #5f859d;
+.TitleBar {
+    display: flex;
+    align-items: center;
+    background-color: #588CB2;
+    width: 100vw;
+    padding-top: .75rem;
+    padding-bottom: .75rem;
 }
 
-.NavIcon {
-    height: 25px;
+.TitleBar h1 {
+    color: white;
+    font-style: italic;
+    font-family: 'Inter', sans-serif;
+    margin-left: 2rem;
+    padding-top: 5px;
 }
 
-.NavIcon:hover {
-    color: #5f859d;
-}
-
-.NavIcon:active {
-    color: #5f859d;
-}
-
-@media (max-width: 600px) {
-    .grid {
-        width: 100%;
-        flex-direction: column;
-    }
+.HamburgerButton {
+    width: 35px;
+    height: 3px;
+    background-color: black;
+    margin: 7px 0;
 }
