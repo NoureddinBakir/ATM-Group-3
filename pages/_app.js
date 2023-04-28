@@ -1,12 +1,12 @@
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../styles/Home.module.css'
-import Navbar from "../components/NavBar";
+import NavBar from "../components/navBar";
 
 function MyApp({Component, pageProps}) {
     return (
         <>
-            <Navbar/>
+            <NavBar/>
             <Component {...pageProps} />
         </>
     )
