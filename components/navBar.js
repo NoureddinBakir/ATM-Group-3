@@ -9,8 +9,6 @@ export default function NavBar () {
         setWid('0%')
     }
     return (
-        /* Should I just create a css class for buttons? Seems like it would take space and be redundant if only using here */
-        /*TODO change to divs with specific class, add image to pad left and text to pad right that is a link*/
         <div>
             <button onClick={() => openNavBar()} style={{backgroundColor: "transparent", borderColor: "transparent"}}>
                 <div className={styles.HamburgerButton}></div>
@@ -18,14 +16,30 @@ export default function NavBar () {
                 <div className={styles.HamburgerButton}></div>
             </button>
             <div className={styles.NavBar} style={{width: wid}}>
-                <button onClick={() => closeNavBar()} style={{backgroundColor: "transparent", borderColor: "transparent", color: "black"}}>
-                    X GOES HERE
+                <button className={styles.NavBarClose} onClick={() => closeNavBar()}>
+                    X
                 </button>
-                <a href="/home">Account Details</a>
-                <a href="/transactions">Transactions</a>
-                <a href="/transfer">Transfer</a>
-                <a href="/deposit">Deposit</a>
-                <a href="/logout">Logout</a>
+
+                <div className={styles.NavBarButton}>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <a href="/home">Account Details</a>
+                </div>
+                <div className={styles.NavBarButton}>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <a href="/transactions">Transactions</a>
+                </div>
+                <div className={styles.NavBarButton}>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <a href="/transfer">Transfer</a>
+                </div>
+                <div className={styles.NavBarButton}>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <a href="/deposit">Deposit</a>
+                </div>
+                <div className={styles.NavBarButton}>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <a href="/logout">Logout</a>
+                </div>
             </div>
         </div>
     )
