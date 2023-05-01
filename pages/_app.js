@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import '../styles/Home.module.css'
-import NavBar from "../components/navBar";
+import NavBar from "../components/navBar"
 
 function MyApp({Component, pageProps}) {
     return (
