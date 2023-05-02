@@ -1,17 +1,18 @@
 import Button from "../components/button";
 import styles from '../styles/Home.module.css';
-import {supabase} from './index.js';
-
-async function signInWithEmail() {
-    const { data, error } = await supabase.auth.signInWithOtp({
-        email: document.getElementById("email").value,
-        options: {
-            emailRedirectTo: 'localhost:3000',
-        },
-    })
-}
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 
 export default function Login() {
+    const supabase = useSupabaseClient();
+    async function signInWithEmail() {
+        const { data, error } = await supabase.auth.signInWithOtp({
+            email: document.getElementById("email").value,
+            options: {
+                emailRedirectTo: 'localhost:3000',
+            },
+        })
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.pageContainer}>
@@ -23,7 +24,6 @@ export default function Login() {
                         </label>
                         <Button type={"primary"} text={"Send OTP"} onClick={() => {
                             signInWithEmail();
-                            console.log(document.getElementById("email").value);
                         }}/>
                         <h5 className={styles.helperText}>Look out for your One Time Password OTP</h5>
                     </div>
