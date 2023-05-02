@@ -13,24 +13,36 @@ export default function deposit(){
             </Head>
 
             <main className={styles.main}>
-                <body className={styles.contentCard}>
-                    <p className={styles.description}>
-                        Upload an image of the check.
-                    </p>
+                <h3 className={styles.title}>
+                    Deposit Money
+                </h3>
 
-                    <input type="file" accept=".jpg, .png, .pdf" /*onChange="handleFile(deposit)"*/ />
-                    {/* don't need to deal with img but prob should check if file type is accepted */}
+                <div className={styles.grid}>
+                    <a className={styles.card}>
+                        <p className={styles.description}>
+                            Upload an image of the check.
+                        </p>
+                    <br/><br/>
+                    <form>
+                        <label htmlFor="first"> Choose a file to upload: </label>
+                        <input type="file" accept=".jpg, .png, .pdf"/>
+                    </form>
+                    </a>
+                </div>
 
-                    <text>
+                <div className={styles.grid}>
+                    <a className={styles.card}>
+                        <p className={styles.description}>
+                            Input the numerical value of deposit as listed on the check.
+                        </p>
                         <br/><br/>
-                    </text>
+                        <form /*action=?? onSubmit update values in DB?*/>
+                            <label htmlFor="first"> $ </label>
+                            <input type="text" /*onInput="validateNumber(deposit)" ?*/ />
+                        </form>
+                    </a>
+                </div>
 
-                    <p className={styles.description}>
-                        Input the numerical value of deposit as listed on the check.
-                    </p>
-                    <input type="text" /*onInput="validateNumber(deposit)"*/ />
-                    {/* onSubmit, update values in DB? */}
-                </body>
             </main>
         </div>
     )
@@ -39,7 +51,7 @@ export default function deposit(){
 //functions from chat gpt on how to specify/limit input types
 // unsure if I leave these functions below the default function?
 
-//accept only jpg/png/pdf
+//if we want to accept only jpg/png/pdf
 //function handleFile(deposit) {
 //     const files = deposit.target.files;
 //     if (files.length === 0) {
