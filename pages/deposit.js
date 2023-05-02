@@ -13,22 +13,24 @@ export default function deposit(){
             </Head>
 
             <main className={styles.main}>
-                <p className={styles.description}>
-                    Upload an image of the check.
-                </p>
+                <body className={styles.contentCard}>
+                    <p className={styles.description}>
+                        Upload an image of the check.
+                    </p>
 
-                <input type="file" accept=".jpg, .png, .pdf" /*onChange="handleFile(deposit)"*/ />
-                {/* don't need to deal with this but prob should check if file type is accepted */}
+                    <input type="file" accept=".jpg, .png, .pdf" /*onChange="handleFile(deposit)"*/ />
+                    {/* don't need to deal with img but prob should check if file type is accepted */}
 
-                <text>
-                    <br/><br/>
-                </text>
+                    <text>
+                        <br/><br/>
+                    </text>
 
-                <p className={styles.description}>
-                    Input the numerical value of deposit as listed on the check.
-                </p>
-                <input type="text" /*onInput="validateNumber(deposit)"*/ />
-                {/* onSubmit, update values in DB? */}
+                    <p className={styles.description}>
+                        Input the numerical value of deposit as listed on the check.
+                    </p>
+                    <input type="text" /*onInput="validateNumber(deposit)"*/ />
+                    {/* onSubmit, update values in DB? */}
+                </body>
             </main>
         </div>
     )
