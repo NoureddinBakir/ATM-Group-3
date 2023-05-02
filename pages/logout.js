@@ -18,6 +18,4 @@ export default function Logout () {
         signOut();
         router.push("/");
     }, []);
-
-
 };
