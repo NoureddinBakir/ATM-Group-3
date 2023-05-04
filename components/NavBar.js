@@ -23,10 +23,11 @@ const Navbar = () => {
                 ) :
                 (<>
                     <div className={styles.NavBar}>
+                        <a href="/home">Home</a>
                         <a href="/login">Login</a>
                         <a href="/register">Register</a>
                         <a href="/support">Support</a>
-                        <a href="/about">About</a>
+                        <a href="/aboutus">About</a>
                         <FontAwesomeIcon icon={faArrowAltCircleLeft} className={styles.NavIcon}
                                          onClick={() => handleClick()}/>
                     </div>
