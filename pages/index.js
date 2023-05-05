@@ -1,15 +1,15 @@
-import Home from "./home";
 import Login from "./login";
-
-const loggedIn = true;
+import { useRouter } from "next/router";
+import { useUser } from '@supabase/auth-helpers-react'
 
 export default function Index() {
-    if (!loggedIn) {
-        return (
-            <Login/>
-        )
+    const router = useRouter();
 
+    // When putting if statement in the async function, would only route to login page even after verifying session
+    if (useUser() == null) {
+        return <Login />;
     } else {
-        return <Home/>
+        router.push("/home");
     }
+
 }
