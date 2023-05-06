@@ -28,6 +28,10 @@ const Navbar = () => {
                         <a href="/register">Register</a>
                         <a href="/support">Support</a>
                         <a href="/aboutus">About</a>
+                        <a href="/accdetails">Dashboard</a>
+                        <a href="/transactions">Transactions</a>
+                        <a href="/transfermoney">Transfer Money</a>
+                        <a href="/sendmoney">Send Money</a>
                         <FontAwesomeIcon icon={faArrowAltCircleLeft} className={styles.NavIcon}
                                          onClick={() => handleClick()}/>
                     </div>

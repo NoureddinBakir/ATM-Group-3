@@ -28,7 +28,7 @@ export default function Home() {
                         <p>Don't have an account? Open one here!</p>
                     </a>
 
-                    <a href="/Login" className={styles.card}>
+                    <a href="/login" className={styles.card}>
                         <h2>Login &rarr;</h2>
                         <p>Already have an account? Login here!</p>
                     </a>
@@ -57,9 +57,8 @@ export default function Home() {
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16}/>
           </span>
                 </a>
-
-                <a href="/accdetails">
-                    <h2>Acc Details</h2>
+                <a href = "/upload3">
+                    Try Uploading here
                 </a>
 
             </footer>

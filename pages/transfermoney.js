@@ -8,15 +8,13 @@ import 'react-js-dropdavn/dist/index.css'
 const data = [
     {label: 'Checking', value: 1},
     {label: 'Savings', value: 2},
-    {label: 'Huh?', value: 3},
-    {label: 'You lost me :p', value: 4},
 ]
 
 export default function transfermoney() {
     return (
         <div className={styles.container}>
             <Head>
-                <title>User Dashboard</title>
+                <title>Transfer Money</title>
                 <link rel="icon" href="/BBB%20logo.png"/>
             </Head>
 
@@ -28,15 +26,16 @@ export default function transfermoney() {
 
             </div>
             <main className={styles.main}>
+                <h2>Transfer money between accounts</h2>
                 <div className={styles.grid}>
                     <a className={styles.card}>
-                        <h3>Transfer Money</h3>
+                        <h3>From</h3>
                         <h4> Select Account: </h4>
                         <SimpleDropdown
                             options={data}
                             clearable
                             configs={
-                                { position: { y: 'top', x: 'center' } }
+                                { position: { y: 'bottom', x: 'center' } }
                             }
                         />
                         <form action="/send-data-here" method="post">
@@ -46,15 +45,24 @@ export default function transfermoney() {
                             <text><br /><br /></text>
                         </form>
                     </a>
+                    <a className={styles.card}>
+                        <h3>To</h3>
+                        <h4> Select Account: </h4>
+                        <SimpleDropdown
+                            options={data}
+                            clearable
+                            configs={
+                                { position: { y: 'bottom', x: 'center' } }
+                            }
+                        />
+                        <text><br/><br/><br/></text>
+                    </a>
                 </div>
+                <a href="" className={styles.card}>
+                    <h2>Transfer &rarr;</h2>
+                </a>
             </main>
 
-
-            <div className={styles.sectionTitle}>
-                <h2>
-                    Accounts Table
-                </h2>
-            </div>
         </div>
     );
             }
