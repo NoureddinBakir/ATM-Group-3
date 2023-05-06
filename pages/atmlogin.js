@@ -1,6 +1,10 @@
 import Button from "../components/button";
 import styles from '../styles/Home.module.css';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import Head from "next/head";
+import React from "react";
+
+// TODO implement login logic for ATM specifically
 
 export default function ATMLogin() {
     const supabase = useSupabaseClient();
@@ -14,6 +18,11 @@ export default function ATMLogin() {
 
     return (
         <div className={styles.container}>
+            <Head>
+                <title>BBB ATM</title>
+                <link rel="icon" href="/BBB%20logo.png"/>
+            </Head>
+
             <div className={styles.pageContainer}>
                 <div className={styles.paddingCard}>
                     <div className={styles.contentCard}>

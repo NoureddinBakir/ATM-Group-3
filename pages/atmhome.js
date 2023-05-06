@@ -4,6 +4,8 @@ import React from "react";
 import Button from "../components/button";
 import { useRouter } from "next/router";
 
+// TODO reference API for name?
+
 export default function ATMHome() {
     const router = useRouter();
     let user = "User";
@@ -13,7 +15,7 @@ export default function ATMHome() {
     return (
         <div className={styles.container}>
             <Head>
-                <title>BBB Account Home</title>
+                <title>BBB ATM</title>
                 <link rel="icon" href="/BBB%20logo.png"/>
             </Head>
 
