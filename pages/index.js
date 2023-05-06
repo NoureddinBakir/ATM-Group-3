@@ -1,7 +1,7 @@
 import Login from "./login";
 import { useRouter } from "next/router";
-import {useSupabaseClient, useUser} from '@supabase/auth-helpers-react'
-import React, {useState} from "react";
+import {useUser} from '@supabase/auth-helpers-react'
+import React from "react";
 
 export default function Index() {
     const router = useRouter();
