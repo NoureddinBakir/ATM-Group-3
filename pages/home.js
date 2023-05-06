@@ -4,17 +4,6 @@ import React, {useEffect, useState} from "react";
 import {useSupabaseClient, useUser} from "@supabase/auth-helpers-react";
 import Index from "./index";
 
-async function getUUID() {
-    const supabase = useSupabaseClient();
-    const UUID = useUser().id;
-    const { data, error } = await supabase
-        .from('profiles')
-        .select('full_name')
-        .eq('id', UUID);
-
-    return data[0].full_name;
-}
-
 export default function Home() {
     const [data, setData] = useState(null);
 
