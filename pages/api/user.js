@@ -27,7 +27,8 @@ export default function handler(req, res) {
             const { error } = await supabase
                 .from('profiles')
                 .update({
-                    checkings_bal: req.body.checkings_bal
+                    ...req.body,
+                    updated_at: new Date(),
                 })
                 .eq('id', id);
 

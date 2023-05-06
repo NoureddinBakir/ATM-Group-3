@@ -3,8 +3,10 @@ import Head from "next/head";
 import React, {useState} from "react";
 import {useUser} from "@supabase/auth-helpers-react";
 import Index from "./index";
+import { useRouter } from "next/router";
 
 export default function Home() {
+    const router = useRouter();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
 
@@ -43,12 +45,11 @@ export default function Home() {
     // as null, then update the variable after the data has been fetched.
     let name = null;
     if(data) {
+        name = data.full_name;
         if(data.checkings_num == null) {
-            name = data.full_name;
-
             // When a user signs up, this value will automatically be null and thus send them to the
             // page to fill out all of their information
-            console.log("redirect to signup page")
+            router.push('/signup');
         }
     }
 
