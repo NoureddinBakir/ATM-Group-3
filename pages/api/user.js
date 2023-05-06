@@ -31,10 +31,10 @@ export default function handler(req, res) {
                 })
                 .eq('id', id);
 
-            res.status(200)
+            res.status(200).send("Successfully updated");
         }
 
-        updateData().catch(error => {console.log(error)});
+        updateData().catch(error => {res.status(400).json({error: error})});
     }
     else {
         res.status(405).json({error: "Method not allowed"});
