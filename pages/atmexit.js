@@ -24,8 +24,7 @@ export default function ATMExit() {
                             }}/>
                             <div>
                                 <Button type={"primary"} text={"Finished"} onClick={() => {
-                                    // TODO sign out logic
-                                    router.push("/atmlogin");
+                                    router.push("/logout");
                                 }}/>
                             </div>
                         </div>
