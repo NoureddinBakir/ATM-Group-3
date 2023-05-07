@@ -45,9 +45,6 @@ export default function ATMBalance() {
         saveBal = data.savings_bal;
     }
 
-    // Implement API call and update the balances, useState hooks?
-    // Show account nums as well?
-
 
 
     return (
