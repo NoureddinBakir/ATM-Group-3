@@ -30,12 +30,17 @@ export default function NavBar () {
                 </div>
                 <div className={styles.NavBarButton}>
                     <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
-                    <a href="/transfer">Transfer</a>
+                    <a href="/deposit">Deposit</a>
                 </div>
                 <div className={styles.NavBarButton}>
                     <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
-                    <a href="/deposit">Deposit</a>
+                    <a href="/sendmoney">Send Money</a>
                 </div>
+                <div className={styles.NavBarButton}>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <a href="/transfer">Transfer Money</a>
+                </div>
+                
                 <div className={styles.NavBarButton}>
                     <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
                     <a href="/logout">Logout</a>
