@@ -117,7 +117,7 @@ export default function Home() {
         if(data.checkings_num == null) {
             // When a user signs up, this value will automatically be null and thus send them to the
             // page to fill out all of their information
-            // router.push('/signup');
+            router.push('/signup');
         }
     }
 

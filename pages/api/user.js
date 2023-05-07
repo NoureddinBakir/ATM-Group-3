@@ -22,7 +22,6 @@ export default function handler(req, res) {
             const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
             const { query } = req;
             const { id } = query;
-
             const supabase = createServerSupabaseClient({req, res}, {supabaseUrl, supabaseKey});
             const { error } = await supabase
                 .from('profiles')
