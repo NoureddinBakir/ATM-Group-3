@@ -14,8 +14,6 @@ export default function Logout () {
                 console.log(error);
             }
         }
-
-        signOut();
-        router.push("/");
+        signOut().then(res => router.push("/"));
     }, []);
 };

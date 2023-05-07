@@ -1,18 +1,20 @@
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
-import React, {useEffect, useState} from "react";
-import {useSupabaseClient, useUser} from "@supabase/auth-helpers-react";
+import React, {useState} from "react";
+import {useUser} from "@supabase/auth-helpers-react";
 import Index from "./index";
+import { useRouter } from "next/router";
 
 export default function Home() {
+    const router = useRouter();
     const [data, setData] = useState(null);
+    const [dataRefresh, setDataRefresh] = useState(true);
 
     if(useUser() == null) {
         return <Index/>;
     }
 
     // Fetch the user data, can be copied to each page that accesses user data
-    // Adding [user] to the end doesn't cause null error, forces to wait for hook to be used or updated?
     const fetchData = async () => {
         let user = useUser().id;
         let url = "/api/user/?id=" + user;
@@ -20,11 +22,22 @@ export default function Home() {
         return userData.json();
     };
 
-    fetchData().then(result => {
-        setData(result[0]);
-    }).catch(error => {
-        console.error(error);
-    });
+    // Forces a data refresh only a few times; boolean can be changed when needed.
+    // Explanation: Without this, the website would constantly call the API every time the page is rendered.
+    // This is very problematic as it causes thousands of API calls, and may have the potential to slow down
+    // the website.
+    if(dataRefresh) {
+        const refreshData = async () => {
+            fetchData().then(result => {
+                setData(result[0]);
+            }).catch(error => {
+                console.error(error);
+            });
+            setDataRefresh(false);
+        };
+
+        refreshData();
+    }
 
     // Very band-aid solution.
     // Explanation: On render, fetchData has not finished yet, so the attempt to reference data.full_name
@@ -33,6 +46,11 @@ export default function Home() {
     let name = null;
     if(data) {
         name = data.full_name;
+        if(data.checkings_num == null) {
+            // When a user signs up, this value will automatically be null and thus send them to the
+            // page to fill out all of their information
+            router.push('/signup');
+        }
     }
 
     return(
