@@ -29,7 +29,7 @@ export default function Login() {
                     </div>
                     <div className={styles.cardFooter}>
                         <p>
-                            <a href="/register">Don't have an account? Register here!</a>
+                            <a>Don't have an account? Just enter your email!</a>
                         </p>
                         <p>
                             <a href="/support">Need more help? Click Here!</a>
