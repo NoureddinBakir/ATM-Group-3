@@ -39,8 +39,15 @@ export default function ATMHome() {
     }
 
     let user = null;
+    let checkings_num = null;
+    let new_user = null;
     if(data) {
+        checkings_num = data.checkings_num;
         user = data.full_name;
+
+        if(checkings_num == null) {
+            router.push('/atmerror');
+        }
     }
 
     return (

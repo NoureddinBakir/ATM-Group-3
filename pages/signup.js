@@ -29,6 +29,7 @@ export default function Signup() {
                 checkings_bal: 0.0,
                 savings_num: savings_num,
                 savings_bal: 0.0,
+                new_user: false,
             }),
         });
 

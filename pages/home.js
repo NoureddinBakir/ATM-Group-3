@@ -68,18 +68,7 @@ export default function Home() {
         },
 
     ];
-    const rowsA = [
-        {
-            key: "1",
-            name: "Checking Account",
-            balance: "$1,295.39",
-        },
-        {
-            key: "2",
-            name: "Savings Account",
-            balance: "$0.01",
-        },
-    ];
+
     const rowsB = [
         {
             key: "1",
@@ -112,14 +101,48 @@ export default function Home() {
     // causes an error that will not render the page. To work around this, must make any variable reference to data
     // as null, then update the variable after the data has been fetched.
     let name = null;
+    let new_user = null;
+    let checkings_acc = null;
+    let checkings_bal = null;
+    let savings_acc = null;
+    let savings_bal = null;
     if(data) {
         name = data.full_name;
-        if(data.checkings_num == null) {
+        new_user = data.new_user;
+        if(data.checkings_num == null && new_user) {
             // When a user signs up, this value will automatically be null and thus send them to the
             // page to fill out all of their information
             router.push('/signup');
         }
+
+        checkings_acc = data.checkings_num.toString().slice(-4);
+        checkings_bal = data.checkings_bal.toFixed(2);
+        savings_acc = data.savings_num.toString().slice(-4);
+        savings_bal = data.savings_bal.toFixed(2);
+        if(checkings_acc == null) {
+            checkings_acc = "N/A";
+            checkings_bal = "N/A";
+        }
+        if(savings_acc == null) {
+            savings_acc = "N/A";
+            savings_bal = "N/A";
+        }
     }
+
+    // Data for respective accounts
+    const rowsA = [
+        {
+            key: "1",
+            name: `Checking Account (${checkings_acc})`,
+            balance: `$${checkings_bal}`,
+        },
+        {
+            key: "2",
+            name: `Savings Account (${savings_acc})`,
+            balance: `$${savings_bal}`,
+        },
+    ];
+
 
     return (
         <div className={styles.container}>
