@@ -64,7 +64,7 @@ export default function ATMDeposit() {
     }
 
     function updateBal(dollarInput) {
-        let newBal = accBal.toFixed(2) + parseInt(dollarInput);
+        let newBal = parseFloat(accBal.toFixed(2)) + parseFloat(dollarInput);
         updateDB(newBal.toFixed(2)).then(res => router.push('/atmexit'));
     }
 

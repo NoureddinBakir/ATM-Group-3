@@ -4,6 +4,7 @@ import React, {useState} from "react";
 import Button from "../components/button";
 import {useRouter} from "next/router";
 import {useUser} from "@supabase/auth-helpers-react";
+import Index from "./index";
 
 // TODO reference API & reflect on page
 
@@ -11,6 +12,9 @@ export default function ATMBalance() {
     let router = useRouter();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
+    if(useUser() == null) {
+        return <Index/>;
+    }
 
     // Fetch the user data, can be copied to each page that accesses user data
     const fetchData = async () => {
