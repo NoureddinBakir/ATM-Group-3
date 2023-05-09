@@ -40,6 +40,10 @@ export default function NavBar () {
                     <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
                     <a href="/transfer">Transfer Money</a>
                 </div>
+                <div className={styles.NavBarButton}>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <a href="/manageaccounts">Manage Accounts</a>
+                </div>
                 
                 <div className={styles.NavBarButton}>
                     <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>

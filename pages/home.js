@@ -5,6 +5,7 @@ import {useUser} from "@supabase/auth-helpers-react";
 import Index from "./index";
 import { useRouter } from "next/router";
 import { Table } from '@nextui-org/react';
+import Button from "../components/button";
 
 // TODO bugs: table labels rendering over navBar
 
@@ -115,17 +116,26 @@ export default function Home() {
             router.push('/signup');
         }
 
-        checkings_acc = data.checkings_num.toString().slice(-4);
-        checkings_bal = data.checkings_bal.toFixed(2);
-        savings_acc = data.savings_num.toString().slice(-4);
-        savings_bal = data.savings_bal.toFixed(2);
+        checkings_acc = data.checkings_num;
+        checkings_bal = data.checkings_bal;
+        savings_acc = data.savings_num;
+        savings_bal = data.savings_bal;
         if(checkings_acc == null) {
             checkings_acc = "N/A";
             checkings_bal = "N/A";
         }
+        else {
+            checkings_acc = data.checkings_num.toString().slice(-4);
+            checkings_bal = data.checkings_bal.toFixed(2);
+        }
+
         if(savings_acc == null) {
             savings_acc = "N/A";
             savings_bal = "N/A";
+        }
+        else {
+            savings_acc = data.savings_num.toString().slice(-4);
+            savings_bal = data.savings_bal.toFixed(2);
         }
     }
 
@@ -150,6 +160,7 @@ export default function Home() {
                 <title>BBB Home</title>
                 <link rel="icon" href="/BBB%20logo.png"/>
             </Head>
+
 
             <div className={styles.sectionTitle}>
                 <h1>
