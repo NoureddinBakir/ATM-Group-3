@@ -45,8 +45,8 @@ export default function ATMBalance() {
     let checkBal = null;
     let saveBal = null;
     if(data) {
-        checkBal = data.checkings_bal;
-        saveBal = data.savings_bal;
+        checkBal = data.checkings_bal.toFixed(2);
+        saveBal = data.savings_bal.toFixed(2);
     }
 
 

@@ -5,7 +5,6 @@ import { useSupabaseClient } from '@supabase/auth-helpers-react';
 export default function Login() {
     const supabase = useSupabaseClient();
     async function signInWithEmail() {
-        console.log(document.getElementById("email").value);
         const { data, error } = await supabase.auth.signInWithOtp({
             email: document.getElementById("email").value,
             options: {

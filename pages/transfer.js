@@ -166,7 +166,7 @@ export default function Transfer() {
                                 <Dropdown.Item key={"Savings Account"}>Savings Account ({savings_acc})</Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>
-                        <form action="/send-data-here" method="post">
+                        <form>
                             <text><br />$ </text>
                             <input type="number" id="transferAmount"/>
                             <text><br /><br /></text>
