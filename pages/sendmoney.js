@@ -3,6 +3,8 @@ import Head from 'next/head';
 import React, { Component } from 'react';
 import { SimpleDropdown } from 'react-js-dropdavn';
 import 'react-js-dropdavn/dist/index.css';
+import {useUser} from "@supabase/auth-helpers-react";
+import Index from "./index";
 
 const data = [
     {label: 'Checking', value: 1},
@@ -13,6 +15,10 @@ const data = [
 // TODO add functionality to send button
 
 export default function Transfermoney() {
+    if(useUser() == null) {
+        return <Index/>;
+    }
+
     return (
         <div className={styles.container}>
             <Head>

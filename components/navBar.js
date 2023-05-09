@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
+
 export default function NavBar () {
     const [wid, setWid] = useState('0%');
     const openNavBar = () => {
@@ -21,32 +22,32 @@ export default function NavBar () {
                 </button>
 
                 <div className={styles.NavBarButton}>
-                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <img src={'/user.png'}/>
                     <a href="/home">Account Details</a>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <img src={'/paper.png'}/>
                     <a href="/transactions">Transactions</a>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <img src={'/cloud-computing.png'}/>
                     <a href="/deposit">Deposit</a>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <img src={'/send-money.png'}/>
                     <a href="/sendmoney">Send Money</a>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <img src={'/two-arrows.png'}/>
                     <a href="/transfer">Transfer Money</a>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <img src={'/skills.png'}/>
                     <a href="/manageaccounts">Manage Accounts</a>
                 </div>
                 
                 <div className={styles.NavBarButton}>
-                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <img src={'/exit.png'}/>
                     <a href="/logout">Logout</a>
                 </div>
             </div>

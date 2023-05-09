@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import {createClient} from "@supabase/supabase-js";
 import Head from "next/head";
 import Button from "../components/button";
+import Index from "./index";
 
 export default function Deposit() {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -24,6 +25,10 @@ export default function Deposit() {
         let userData = await fetch(url)
         return userData.json();
     };
+
+    if(useUser() == null) {
+        return <Index/>;
+    }
 
     // Changed bandaid data format
     // Declare hook at beginning of function, and check if null. Then do data load once we have a valid user.
