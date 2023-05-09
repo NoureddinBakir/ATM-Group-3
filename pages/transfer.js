@@ -123,8 +123,8 @@ export default function Transfer() {
             newSavingsBal = parseFloat(savings_bal) + parseFloat(document.getElementById("transferAmount").value);
         }
         else if(selectedValue === "Savings Account") {
-            newCheckingsBal = parseFloat(savings_bal) - parseFloat(document.getElementById("transferAmount").value);
-            newSavingsBal = parseFloat(savings_bal) + parseFloat(document.getElementById("transferAmount").value);
+            newSavingsBal = parseFloat(savings_bal) - parseFloat(document.getElementById("transferAmount").value);
+            newCheckingsBal = parseFloat(checkings_bal) + parseFloat(document.getElementById("transferAmount").value);
         }
         else {
             alert("Please select an account to transfer from!");
