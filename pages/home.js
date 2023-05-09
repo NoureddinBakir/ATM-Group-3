@@ -5,9 +5,10 @@ import {useUser} from "@supabase/auth-helpers-react";
 import Index from "./index";
 import { useRouter } from "next/router";
 import { Table } from '@nextui-org/react';
-import Button from "../components/button";
 
 // TODO bugs: table labels rendering over navBar
+// TODO: implement actual transactions. Look at nextui tables documentation for dynamic table info
+// look into infinity pagination for actual transactions page?
 
 export default function Home() {
     const router = useRouter();
@@ -180,6 +181,7 @@ export default function Home() {
                     css={{
                         height: "auto",
                         minWidth: "100%",
+                        zIndex: "10",
                     }}
                 >
                     <Table.Header columns={columnsA}>
@@ -207,6 +209,7 @@ export default function Home() {
                     css={{
                         height: "auto",
                         minWidth: "100%",
+                        zIndex: "10",
                     }}
                 >
                     <Table.Header columns={columnsB}>

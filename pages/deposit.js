@@ -145,7 +145,7 @@ export default function Deposit() {
                 {oldCheckURL ? (
                     <img
                         src={oldCheckURL}
-                        alt="Old Check"
+                        alt="No previous check found!"
                         className="avatar image"
                         style={{ height: 200, width: 500 }}
                     />

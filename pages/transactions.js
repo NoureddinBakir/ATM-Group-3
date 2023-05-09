@@ -124,6 +124,7 @@ export default function Transactions() {
                 css={{
                     height: "auto",
                     minWidth: "100%",
+                    zIndex: "10",
                 }}
             >
                 <Table.Header columns={columnsB}>
@@ -151,6 +152,7 @@ export default function Transactions() {
                 css={{
                     height: "auto",
                     minWidth: "100%",
+                    zIndex: "10",
                 }}
             >
                 <Table.Header columns={columnsB}>
