@@ -8,15 +8,9 @@ import { useRouter } from "next/router";
 export default function Signup() {
     const router = useRouter();
     const user = useUser().id;
-    // acc nums should be between 100000000000 - 999999999999 (12 digits long)
-    function generateAccNum() {
-        return Math.floor(Math.random() * 899999999999);
-    }
 
     async function updateDB() {
-        let url = "/api/user/?id=" + user;
-        let checkings_num = generateAccNum();
-        let savings_num = generateAccNum();
+        let url = "/api/userData/?id=" + user;
 
         let userData = await fetch(url, {
             method: "PUT",
@@ -25,14 +19,30 @@ export default function Signup() {
             },
             body: JSON.stringify({
                 full_name: document.getElementById("fullName").value,
-                checkings_num: checkings_num,
-                checkings_bal: 0.0,
-                savings_num: savings_num,
-                savings_bal: 0.0,
+                new_user: false,
             }),
         });
 
-        if (userData.ok) {
+        url = "/api/user/?id=" + user;
+        let createCheckings = await fetch(url, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                type: "Checkings",
+                balance: 0,
+            }),
+        });
+
+        let createSavings = await fetch(url, {
+            method: "POST",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                type: "Savings",
+                balance: 0,
+            }),
+        });
+
+        if (createSavings.ok && createCheckings.ok) {
             // Request was successful, send to home page
             router.push('/home');
         }

@@ -4,20 +4,25 @@ import React, {useState} from "react";
 import Button from "../components/button";
 import { useRouter } from "next/router";
 import {useUser} from "@supabase/auth-helpers-react";
+import {Dropdown} from "@nextui-org/react";
 
 // TODO reference API & withdraw logic
 // TODO create error page
 
 export default function ATMWithdraw() {
     const router = useRouter();
-    const user = useUser().id;
+    const user = useUser();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
+    const [selected, setSelected] = useState(new Set(["Choose an Account"]));
+    const selectedValue = React.useMemo(
+        () => Array.from(selected).join(", ").replaceAll("_", " "),
+        [selected]
+    );
 
     // Fetch the user data, can be copied to each page that accesses user data
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };
@@ -27,10 +32,10 @@ export default function ATMWithdraw() {
     // Explanation: Without this, the website would constantly call the API every time the page is rendered.
     // This is very problematic as it causes thousands of API calls, and may have the potential to slow down
     // the website.
-    if(dataRefresh) {
+    if(dataRefresh && user != null) {
         const refreshData = async () => {
             fetchData().then(result => {
-                setData(result[0]);
+                setData(result);
             }).catch(error => {
                 console.error(error);
             });
@@ -40,13 +45,21 @@ export default function ATMWithdraw() {
         refreshData();
     }
 
-    let accBal = null;
+    let dropdownAccounts = [];
     if(data) {
-        accBal = data.checkings_bal;
+        data.forEach((account) => {
+            const formattedID = account.id.toString().padStart(4, '0');
+            dropdownAccounts.push({
+                key: `${account.type} Account (${formattedID})`,
+                name: `${account.type} (${formattedID})`,
+                apiBal: account.balance,
+                apiKey: account.id,
+            })
+        })
     }
 
-    async function updateDB(newBal) {
-        let url = "/api/user/?id=" + user;
+    async function updateDB(newBal, id) {
+        let url = "/api/user/?id=" + id;
 
         let userData = await fetch(url, {
             method: "PUT",
@@ -54,7 +67,7 @@ export default function ATMWithdraw() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                checkings_bal: newBal,
+                balance: newBal,
             }),
         });
 
@@ -65,9 +78,20 @@ export default function ATMWithdraw() {
     }
 
     function validateBal(amount) {
-        if(accBal - amount >= 0) {
+        const withdrawAmount = dropdownAccounts.find((row) => row.key.includes(selectedValue));
+        if(withdrawAmount == null) {
+            alert("Please select an account! Press esc to continue.");
+            return;
+        }
+        if(parseFloat(amount) > 1000) {
+            alert("You can not withdraw more than $1,000! Press esc to continue.");
+            return;
+        }
+
+        let newBal = parseFloat(withdrawAmount.apiBal) - parseFloat(amount);
+        if(newBal >= 0) {
             // Update balance in API
-            updateDB(accBal - amount)
+            updateDB(newBal.toFixed(2), withdrawAmount.apiKey)
         }
         else {
             alert("You don't have the proper funds to withdraw this amount! Click esc to continue.");
@@ -86,7 +110,27 @@ export default function ATMWithdraw() {
             <div className={styles.pageContainer}>
                 <div className={styles.paddingCard}>
                     <div className={styles.contentCard}>
-                        <h2 className={styles.sectionTitle}>Comes From Checkings</h2>
+                        <h2 className={styles.sectionTitle}>
+                            <Dropdown>
+                                <Dropdown.Button flat style={{zIndex: "10"}}>
+                                    {selectedValue}
+                                </Dropdown.Button>
+                                <Dropdown.Menu
+                                    aria-label="Accounts"
+                                    disallowEmptySelection
+                                    selectionMode="single"
+                                    selectedKeys={selected}
+                                    onSelectionChange={setSelected}
+                                    items={dropdownAccounts}
+                                >
+                                    {(item) => (
+                                        <Dropdown.Item key={item.key}>
+                                            {item.name}
+                                        </Dropdown.Item>
+                                    )}
+                                </Dropdown.Menu>
+                            </Dropdown>
+                        </h2>
                         <h2 className={styles.sectionTitle}>Select Amount</h2>
                         <div>
                             <Button type={"primary"} text={"$20"} onClick={() => {
@@ -110,7 +154,19 @@ export default function ATMWithdraw() {
                                 router.push("/atmhome");
                             }}/>
                         </div>
-
+                        <div>
+                            <label>
+                                <input name="dollarInput" id="dollarInput" className={styles.inputUnderlined} placeholder={"Enter Amount"}/>
+                            </label>
+                            <Button type={"primary"} text={"Done"} onClick={() => {
+                                if(document.getElementById("dollarInput").value > 0) {
+                                    validateBal(document.getElementById("dollarInput").value);
+                                }
+                                else {
+                                    alert("Please enter a valid amount! Press esc to continue.");
+                                }
+                            }}/>
+                        </div>
                     </div>
                 </div>
             </div>
