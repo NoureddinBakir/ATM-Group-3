@@ -4,19 +4,24 @@ import React, {useState} from "react";
 import {useRouter} from "next/router";
 import Button from "../components/button";
 import {useUser} from "@supabase/auth-helpers-react";
+import {Dropdown} from "@nextui-org/react";
 
 // TODO reference API & update balance function
 
 export default function ATMDeposit() {
     const router = useRouter();
-    const user = useUser().id;
+    const user = useUser();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
+    const [selected, setSelected] = useState(new Set(["Choose an Account"]));
+    const selectedValue = React.useMemo(
+        () => Array.from(selected).join(", ").replaceAll("_", " "),
+        [selected]
+    );
 
     // Fetch the user data, can be copied to each page that accesses user data
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };
@@ -26,10 +31,10 @@ export default function ATMDeposit() {
     // Explanation: Without this, the website would constantly call the API every time the page is rendered.
     // This is very problematic as it causes thousands of API calls, and may have the potential to slow down
     // the website.
-    if(dataRefresh) {
+    if(dataRefresh && user != null) {
         const refreshData = async () => {
             fetchData().then(result => {
-                setData(result[0]);
+                setData(result);
             }).catch(error => {
                 console.error(error);
             });
@@ -39,21 +44,28 @@ export default function ATMDeposit() {
         refreshData();
     }
 
-    let accBal = null;
+    let dropdownAccounts = [];
     if(data) {
-        accBal = data.checkings_bal;
+        data.forEach((account) => {
+            const formattedID = account.id.toString().padStart(4, '0');
+            dropdownAccounts.push({
+                key: `${account.type} Account (${formattedID})`,
+                name: `${account.type} (${formattedID})`,
+                apiBal: account.balance,
+                apiKey: account.id,
+            })
+        })
     }
 
-    async function updateDB(newBal) {
-        let url = "/api/user/?id=" + user;
-
+    async function updateDB(newBal, id) {
+        let url = "/api/user/?id=" + id;
         let userData = await fetch(url, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                checkings_bal: newBal,
+                balance: newBal,
             }),
         });
 
@@ -63,9 +75,19 @@ export default function ATMDeposit() {
         }
     }
 
+
     function updateBal(dollarInput) {
-        let newBal = parseFloat(accBal.toFixed(2)) + parseFloat(dollarInput);
-        updateDB(newBal.toFixed(2)).then(res => router.push('/atmexit'));
+        const depositAmount = dropdownAccounts.find((row) => row.key.includes(selectedValue));
+        if(depositAmount == null) {
+            alert("Please select an account! Press esc to continue.");
+            return;
+        }
+        if(parseFloat(dollarInput) > 1000) {
+            alert("You can not deposit more than $1,000! Press esc to continue.");
+            return;
+        }
+        let newBal = parseFloat(depositAmount.apiBal) + parseFloat(dollarInput);
+        updateDB(newBal.toFixed(2), depositAmount.apiKey).then(res => router.push('/atmexit'));
     }
 
     return (
@@ -80,6 +102,25 @@ export default function ATMDeposit() {
                     <div className={styles.contentCard}>
                         <h2 className={styles.sectionTitle}>Input Bills, Specify Amount, Click Done</h2>
                         <div>
+                            <Dropdown>
+                                <Dropdown.Button flat style={{zIndex: "10"}}>
+                                    {selectedValue}
+                                </Dropdown.Button>
+                                <Dropdown.Menu
+                                    aria-label="Accounts"
+                                    disallowEmptySelection
+                                    selectionMode="single"
+                                    selectedKeys={selected}
+                                    onSelectionChange={setSelected}
+                                    items={dropdownAccounts}
+                                >
+                                    {(item) => (
+                                        <Dropdown.Item key={item.key}>
+                                            {item.name}
+                                        </Dropdown.Item>
+                                    )}
+                                </Dropdown.Menu>
+                            </Dropdown>
                             <label>
                                 <input name="dollarInput" id="dollarInput" className={styles.inputUnderlined} placeholder={"Enter Amount"}/>
                             </label>

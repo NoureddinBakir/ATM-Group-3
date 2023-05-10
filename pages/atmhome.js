@@ -11,21 +11,18 @@ export default function ATMHome() {
     const router = useRouter();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
+    const user = useUser();
 
     // Fetch the user data, can be copied to each page that accesses user data
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/userData/?id=" + user.id;
         let userData = await fetch(url)
+
         return userData.json();
     };
 
-
-    // Forces a data refresh only a few times; boolean can be changed when needed.
-    // Explanation: Without this, the website would constantly call the API every time the page is rendered.
-    // This is very problematic as it causes thousands of API calls, and may have the potential to slow down
-    // the website.
-    if(dataRefresh) {
+    // Refresh accounts
+    if(dataRefresh && user != null) {
         const refreshData = async () => {
             fetchData().then(result => {
                 setData(result[0]);
@@ -38,16 +35,9 @@ export default function ATMHome() {
         refreshData();
     }
 
-    let user = null;
-    let checkings_num = null;
-    let new_user = null;
+    let name = null;
     if(data) {
-        checkings_num = data.checkings_num;
-        user = data.full_name;
-
-        if(checkings_num == null) {
-            router.push('/atmerror');
-        }
+        name = data.full_name;
     }
 
     return (
@@ -60,7 +50,7 @@ export default function ATMHome() {
             <div className={styles.pageContainer}>
                 <div className={styles.paddingCard}>
                     <div className={styles.contentCard}>
-                        <h2 className={styles.sectionTitle}>Welcome, {user}</h2>
+                        <h2 className={styles.sectionTitle}>Welcome, {name}</h2>
                         <Button type={"primary"} text={"Withdraw"} onClick={() => {
                             router.push("/atmwithdraw");
                         }}/>

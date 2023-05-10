@@ -6,6 +6,7 @@ import {createClient} from "@supabase/supabase-js";
 import Head from "next/head";
 import Button from "../components/button";
 import Index from "./index";
+import {Dropdown} from "@nextui-org/react";
 
 export default function Deposit() {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -17,25 +18,41 @@ export default function Deposit() {
     const [oldCheckURL, setOldCheckURL] = useState(null);
     const user = useUser();
 
+    const [userData, setUserData] = useState(null);
+    const [userDataRefresh, setUserDataRefresh] = useState(true);
+
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
-    // Fetch the user data, can be copied to each page that accesses user data
+
+    const [selected, setSelected] = useState(new Set(["Choose an Account"]));
+    const selectedValue = React.useMemo(
+        () => Array.from(selected).join(", ").replaceAll("_", " "),
+        [selected]
+    );
+
+    // Fetch the user accounts
     const fetchData = async () => {
         let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };
 
+    // Fetch user data
+    const fetchUserData = async () => {
+        let url = "/api/userData/?id=" + user.id;
+        let userData = await fetch(url)
+        return userData.json();
+    }
+
     if(useUser() == null) {
         return <Index/>;
     }
 
-    // Changed bandaid data format
-    // Declare hook at beginning of function, and check if null. Then do data load once we have a valid user.
+    // Refresh user accounts
     if(dataRefresh && user != null) {
         const refreshData = async () => {
             fetchData().then(result => {
-                setData(result[0]);
+                setData(result);
             }).catch(error => {
                 console.error(error);
             });
@@ -44,13 +61,38 @@ export default function Deposit() {
         refreshData();
     }
 
-    let oldCheck = null;
-    let checkings_bal = null;
-    if(data) {
-        oldCheck = data.check_url;
-        checkings_bal = data.checkings_bal;
+    // Refresh user data
+    if(userDataRefresh && user != null) {
+        const refreshUserData = async () => {
+            fetchUserData().then(result => {
+                setUserData(result[0]);
+            }).catch(error => {
+                console.error(error);
+            });
+            setUserDataRefresh(false);
+        }
+        refreshUserData();
     }
 
+    // Initialize accounts
+    let dropdownAccounts = [];
+    if(data) {
+        data.forEach((account) => {
+            const formattedID = account.id.toString().padStart(4, '0');
+            dropdownAccounts.push({
+                key: `${account.type} Account (${formattedID})`,
+                name: `${account.type} (${formattedID})`,
+                apiKey: account.id,
+                apiBal: account.balance,
+            })
+        })
+    }
+
+    // Initialize user data
+    let oldCheck = null;
+    if(userData) {
+        oldCheck = userData.check_url;
+    }
     const handleSubmit = async (e) => {
         if(!fileSelected) {
             alert("Please upload a check! Click esc to continue.");
@@ -80,17 +122,32 @@ export default function Deposit() {
             updateImg(filepath);
         }
 
-        let new_bal = parseFloat(document.getElementById("checkAmount").value) + parseFloat(checkings_bal);
+        // Search the set for the proper account
+        const foundAccount = dropdownAccounts.find((row) => row.key.includes(selectedValue));
+        console.log(foundAccount);
 
-        let url = "/api/user/?id=" + user.id;
+        let new_bal = parseFloat(document.getElementById("checkAmount").value) + parseFloat(foundAccount.apiBal);
+
+        // Update userData with the new check url
+        let url = "/api/userData/?id=" + user.id;
         let userData = await fetch(url, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                checkings_bal: new_bal,
                 check_url: filepath,
+            }),
+        });
+
+        // Update account balance with the new balance
+        let accUrl = "/api/user/?id=" + foundAccount.apiKey;
+        let updateBal = await fetch(accUrl, {
+            // Update the user's balance on the corresponding account
+            method: "PUT",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                balance: new_bal.toFixed(2),
             }),
         });
     };
@@ -120,6 +177,25 @@ export default function Deposit() {
                 <title>BBB Deposit Check</title>
                 <link rel="icon" href="/BBB%20logo.png"/>
             </Head>
+            <Dropdown>
+                <Dropdown.Button flat style={{zIndex: "10"}}>
+                    {selectedValue}
+                </Dropdown.Button>
+                <Dropdown.Menu
+                    aria-label="Accounts"
+                    disallowEmptySelection
+                    selectionMode="single"
+                    selectedKeys={selected}
+                    onSelectionChange={setSelected}
+                    items={dropdownAccounts}
+                >
+                    {(item) => (
+                        <Dropdown.Item key={item.key}>
+                            {item.name}
+                        </Dropdown.Item>
+                    )}
+                </Dropdown.Menu>
+            </Dropdown>
             <form>
                 <text><br />Enter amount on check: $</text>
                 <input type="number" id="checkAmount"/>
@@ -127,7 +203,7 @@ export default function Deposit() {
             </form>
             <form onSubmit={handleSubmit}>
                 <input type={"file"} name={"image"} onChange={handleFileSelected}/>
-                <button type={"submit"}>Upload image</button>
+                <button type={"submit"}>Upload Check</button>
                 <div>
                     {check ? (
                         <img

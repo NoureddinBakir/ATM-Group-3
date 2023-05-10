@@ -11,6 +11,9 @@ export default function Login() {
                 emailRedirectTo: 'http://localhost:3000/redirect',
             },
         })
+        if(error) {
+            console.log(error);
+        }
     }
 
     return (

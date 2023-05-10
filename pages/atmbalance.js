@@ -5,6 +5,7 @@ import Button from "../components/button";
 import {useRouter} from "next/router";
 import {useUser} from "@supabase/auth-helpers-react";
 import Index from "./index";
+import {Table} from "@nextui-org/react";
 
 // TODO reference API & reflect on page
 
@@ -32,7 +33,7 @@ export default function ATMBalance() {
     if(dataRefresh) {
         const refreshData = async () => {
             fetchData().then(result => {
-                setData(result[0]);
+                setData(result);
             }).catch(error => {
                 console.error(error);
             });
@@ -42,14 +43,31 @@ export default function ATMBalance() {
         refreshData();
     }
 
-    let checkBal = null;
-    let saveBal = null;
+    let rowsA = [];
     if(data) {
-        checkBal = data.checkings_bal.toFixed(2);
-        saveBal = data.savings_bal.toFixed(2);
+        data.forEach((account, index) => {
+            const formattedID = account.id.toString().padStart(4, '0');
+            rowsA.push({
+                key: (index + 1).toString(),
+                name: `${account.type} Account (${formattedID})`,
+                balance: `$${account.balance}` ,
+                apiBal: account.balance,
+                apiKey: account.id,
+            });
+        })
     }
 
 
+    const columnsA = [
+        {
+            key: "name",
+            label: "Account Name",
+        },
+        {
+            key: "balance",
+            label: "Balance",
+        },
+    ]
 
     return (
         <div className={styles.container}>
@@ -61,8 +79,27 @@ export default function ATMBalance() {
                 <div className={styles.paddingCard}>
                     <div className={styles.contentCard}>
                         <h2 className={styles.sectionTitle}>Accounts</h2>
-                        <h3>Checkings account: ${checkBal}</h3>
-                        <h3>Savings account: ${saveBal}</h3>
+                        <Table
+                            aria-label="Example table with dynamic content"
+                            css={{
+                                height: "auto",
+                                minWidth: "100%",
+                                zIndex: "10",
+                            }}
+                        >
+                            <Table.Header columns={columnsA}>
+                                {(column) => (
+                                    <Table.Column key={column.key}>{column.label}</Table.Column>
+                                )}
+                            </Table.Header>
+                            <Table.Body items={rowsA}>
+                                {(item) => (
+                                    <Table.Row key={item.key}>
+                                        {(columnKey) => <Table.Cell>{item[columnKey]}</Table.Cell>}
+                                    </Table.Row>
+                                )}
+                            </Table.Body>
+                        </Table>
                         <Button type={"primary"} text={"Done"} onClick={() => {
                             router.push("/atmexit");
                         }}/>

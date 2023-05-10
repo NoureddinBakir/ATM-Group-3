@@ -6,7 +6,6 @@ import Index from "./index";
 import { useRouter } from "next/router";
 import { Table } from '@nextui-org/react';
 
-// TODO bugs: table labels rendering over navBar
 // TODO: implement actual transactions. Look at nextui tables documentation for dynamic table info
 // look into infinity pagination for actual transactions page?
 
@@ -14,12 +13,15 @@ export default function Home() {
     const router = useRouter();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
+    const [userData, setUserData] = useState(null);
+    const [userDataRefresh, setUserDataRefresh] = useState(true);
 
+    // Check if user signed in
     if(useUser() == null) {
         return <Index/>;
     }
 
-    // Fetch the user data, can be copied to each page that accesses user data
+    // Fetch user accounts
     const fetchData = async () => {
         let user = useUser().id;
         let url = "/api/user/?id=" + user;
@@ -27,24 +29,41 @@ export default function Home() {
         return userData.json();
     };
 
-    // Forces a data refresh only a few times; boolean can be changed when needed.
-    // Explanation: Without this, the website would constantly call the API every time the page is rendered.
-    // This is very problematic as it causes thousands of API calls, and may have the potential to slow down
-    // the website.
+    // Prevent constant fetching of data
     if(dataRefresh) {
         const refreshData = async () => {
             fetchData().then(result => {
-                setData(result[0]);
+                setData(result);
             }).catch(error => {
                 console.error(error);
             });
             setDataRefresh(false);
         };
-
         refreshData();
     }
 
+    // Fetch user data
+    const fetchUserData = async () => {
+        let user = useUser().id;
+        let url = "/api/userData/?id=" + user;
+        let userData = await fetch(url)
+        return userData.json();
+    };
 
+    // Prevent constant fetching of user data
+    if(userDataRefresh) {
+        const refreshUserData = async () => {
+            fetchUserData().then(result => {
+                setUserData(result[0]);
+            }).catch(error => {
+                console.error(error);
+            });
+            setUserDataRefresh(false);
+        };
+        refreshUserData();
+    }
+
+    // Initialize table data
     const columnsA = [
         {
             key: "name",
@@ -70,7 +89,6 @@ export default function Home() {
         },
 
     ];
-
     const rowsB = [
         {
             key: "1",
@@ -98,61 +116,36 @@ export default function Home() {
         },
     ];
 
-    // Very band-aid solution.
-    // Explanation: On render, fetchData has not finished yet, so the attempt to reference data.full_name
-    // causes an error that will not render the page. To work around this, must make any variable reference to data
-    // as null, then update the variable after the data has been fetched.
-    let name = null;
-    let new_user = null;
-    let checkings_acc = null;
-    let checkings_bal = null;
-    let savings_acc = null;
-    let savings_bal = null;
+    // Initialize account data
+    let rowsA = [];
     if(data) {
-        name = data.full_name;
-        new_user = data.new_user;
-        if(data.checkings_num == null && new_user) {
-            // When a user signs up, this value will automatically be null and thus send them to the
-            // page to fill out all of their information
-            router.push('/signup');
-        }
-
-        checkings_acc = data.checkings_num;
-        checkings_bal = data.checkings_bal;
-        savings_acc = data.savings_num;
-        savings_bal = data.savings_bal;
-        if(checkings_acc == null) {
-            checkings_acc = "N/A";
-            checkings_bal = "N/A";
-        }
-        else {
-            checkings_acc = data.checkings_num.toString().slice(-4);
-            checkings_bal = data.checkings_bal.toFixed(2);
-        }
-
-        if(savings_acc == null) {
-            savings_acc = "N/A";
-            savings_bal = "N/A";
-        }
-        else {
-            savings_acc = data.savings_num.toString().slice(-4);
-            savings_bal = data.savings_bal.toFixed(2);
+        data.forEach((account, index) => {
+            const formattedID = account.id.toString().padStart(4, '0');
+            rowsA.push({
+                key: (index + 1).toString(),
+                name: `${account.type} Account (${formattedID})`,
+                balance: `$${account.balance}` ,
+            });
+        })
+        if(rowsA === []) {
+            rowsA = [{
+                key: "1",
+                name: "No Accounts Found!",
+                balance: null,
+            }]
         }
     }
 
-    // Data for respective accounts
-    const rowsA = [
-        {
-            key: "1",
-            name: `Checking Account (${checkings_acc})`,
-            balance: `$${checkings_bal}`,
-        },
-        {
-            key: "2",
-            name: `Savings Account (${savings_acc})`,
-            balance: `$${savings_bal}`,
-        },
-    ];
+    // Initialize user data
+    let name = null;
+    let new_user = null;
+    if(userData) {
+        name = userData.full_name;
+        new_user = userData.new_user;
+        if(new_user === true) {
+            router.push('/signup');
+        }
+    }
 
 
     return (

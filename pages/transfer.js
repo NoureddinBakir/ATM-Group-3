@@ -8,16 +8,17 @@ import Index from "./index";
 import Button from "../components/button";
 import {useRouter} from "next/router";
 
-
-
-// TODO change "data" const to pull checkings and savings from db
-// TODO add functionality to transfer button
 export default function Transfer() {
     // Used for dropdown menu
     const [selected, setSelected] = useState(new Set(["Select Account"]));
     const selectedValue = React.useMemo(
         () => Array.from(selected).join(", ").replaceAll("_", " "),
         [selected]
+    );
+    const [secondSelected, setSecondSelected] = useState(new Set(["Select Account"]));
+    const secondSelectedValue = React.useMemo(
+        () => Array.from(secondSelected).join(", ").replaceAll("_", " "),
+        [secondSelected]
     );
 
 
@@ -27,10 +28,11 @@ export default function Transfer() {
     if(useUser() == null) {
         return <Index/>;
     }
+
     const user = useUser().id;
     const router = useRouter();
 
-    // Fetch the user data, can be copied to each page that accesses user data
+    // Fetch the user accounts
     const fetchData = async () => {
         let user = useUser().id;
         let url = "/api/user/?id=" + user;
@@ -38,14 +40,10 @@ export default function Transfer() {
         return userData.json();
     };
 
-    // Forces a data refresh only a few times; boolean can be changed when needed.
-    // Explanation: Without this, the website would constantly call the API every time the page is rendered.
-    // This is very problematic as it causes thousands of API calls, and may have the potential to slow down
-    // the website.
     if(dataRefresh) {
         const refreshData = async () => {
             fetchData().then(result => {
-                setData(result[0]);
+                setData(result);
             }).catch(error => {
                 console.error(error);
             });
@@ -55,53 +53,20 @@ export default function Transfer() {
         refreshData();
     }
 
-    let checkings_acc = null;
-    let checkings_bal = null;
-    let savings_acc = null;
-    let savings_bal = null;
+    // Initialize user accounts, used in drop down menu
+    let dropdownAccounts = [];
     if(data) {
-        checkings_acc = data.checkings_num;
-        checkings_bal = data.checkings_bal;
-        savings_acc = data.savings_num;
-        savings_bal = data.savings_bal;
-        if(checkings_acc == null) {
-            checkings_acc = "N/A";
-            checkings_bal = "N/A";
-        }
-        else {
-            checkings_acc = data.checkings_num.toString().slice(-4);
-            checkings_bal = data.checkings_bal.toFixed(2);
-        }
-
-        if(savings_acc == null) {
-            savings_acc = "N/A";
-            savings_bal = "N/A";
-        }
-        else {
-            savings_acc = data.savings_num.toString().slice(-4);
-            savings_bal = data.savings_bal.toFixed(2);
-        }
-    }
-
-    async function updateDB(newCheckingsBal, newSavingsBal) {
-        let url = "/api/user/?id=" + user;
-
-        let userData = await fetch(url, {
-            method: "PUT",
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                checkings_bal: newCheckingsBal,
-                savings_bal: newSavingsBal,
-            }),
+        data.forEach((account) => {
+            const formattedID = account.id.toString().padStart(4, '0');
+            dropdownAccounts.push({
+                key: `${account.type} Account (${formattedID})`,
+                name: `${account.type} (${formattedID})`,
+                apiKey: account.id,
+                apiBal: account.balance,
+            })
         });
-
-        if (userData.ok) {
-            // Request was successful, send to home page
-            router.push('/home');
-        }
     }
+
 
     function updateBal() {
         if(document.getElementById("transferAmount").value < 0) {
@@ -116,27 +81,53 @@ export default function Transfer() {
         } catch {}
 
 
-        let newCheckingsBal = 0;
-        let newSavingsBal = 0;
-        if(selectedValue === "Checking Account") {
-            newCheckingsBal = parseFloat(checkings_bal) - parseFloat(document.getElementById("transferAmount").value);
-            newSavingsBal = parseFloat(savings_bal) + parseFloat(document.getElementById("transferAmount").value);
-        }
-        else if(selectedValue === "Savings Account") {
-            newSavingsBal = parseFloat(savings_bal) - parseFloat(document.getElementById("transferAmount").value);
-            newCheckingsBal = parseFloat(checkings_bal) + parseFloat(document.getElementById("transferAmount").value);
-        }
-        else {
+
+
+        const senderAccount = dropdownAccounts.find((row) => row.key.includes(selectedValue));
+        const recipAccount = dropdownAccounts.find((row) => row.key.includes(secondSelectedValue));
+
+        if(senderAccount === null || recipAccount === null) {
             alert("Please select an account to transfer from!");
             return;
         }
 
-        if(newCheckingsBal < 0 || newSavingsBal < 0 ) {
+        let newSenderBal = parseFloat(senderAccount.apiBal) - parseFloat(document.getElementById("transferAmount").value);
+        let newRecipBal = parseFloat(recipAccount.apiBal) + parseFloat(document.getElementById("transferAmount").value);
+
+        if(newSenderBal < 0) {
             alert("You don't have enough funds to do this! Click esc to continue.");
             return;
         }
 
-        updateDB(newCheckingsBal, newSavingsBal);
+        updateDB(senderAccount.apiKey, newSenderBal, recipAccount.apiKey, newRecipBal);
+    }
+
+    async function updateDB(senderKey, newSenderBal, recipKey, newRecipBal) {
+        let senderUrl = "/api/user/?id=" + senderKey;
+
+        let senderData = await fetch(senderUrl, {
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                balance: newSenderBal,
+            }),
+        });
+
+        let recipUrl = "/api/user/?id=" + recipKey;
+        let recipData = await fetch(recipUrl, {
+            method: "PUT",
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                balance: newRecipBal,
+            })
+        })
+
+        if (recipData.ok) {
+            // Request was successful, send to home page
+            router.push('/home');
+        }
     }
 
     return (
@@ -161,14 +152,42 @@ export default function Transfer() {
                                 disallowEmptySelection
                                 selectionMode="single"
                                 selectedKeys={selected}
-                                onSelectionChange={setSelected}>
-                                <Dropdown.Item key={"Checking Account"}>Checking Account ({checkings_acc})</Dropdown.Item>
-                                <Dropdown.Item key={"Savings Account"}>Savings Account ({savings_acc})</Dropdown.Item>
+                                onSelectionChange={setSelected}
+                                items={dropdownAccounts}>
+                                {(item) => (
+                                    <Dropdown.Item key={item.key}>
+                                        {item.name}
+                                    </Dropdown.Item>
+                                )}
                             </Dropdown.Menu>
                         </Dropdown>
                         <form>
                             <text><br />$ </text>
                             <input type="number" id="transferAmount"/>
+                            <text><br /><br /></text>
+                        </form>
+                    </a>
+                    <a className={styles.card}>
+                        <h3>To </h3>
+                        <h4> Select Account: </h4>
+                        <Dropdown>
+                            <Dropdown.Button flat>{secondSelectedValue}</Dropdown.Button>
+                            <Dropdown.Menu
+                                aria-label="Static Actions"
+                                disallowEmptySelection
+                                selectionMode="single"
+                                selectedKeys={secondSelected}
+                                onSelectionChange={setSecondSelected}
+                                items={dropdownAccounts}>
+                                {(item) => (
+                                    <Dropdown.Item key={item.key}>
+                                        {item.name}
+                                    </Dropdown.Item>
+                                )}
+                            </Dropdown.Menu>
+                        </Dropdown>
+                        <form>
+                            <text><br /> </text>
                             <text><br /><br /></text>
                         </form>
                     </a>
