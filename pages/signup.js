@@ -7,10 +7,10 @@ import { useRouter } from "next/router";
 
 export default function Signup() {
     const router = useRouter();
-    const user = useUser().id;
+    const user = useUser();
 
     async function updateDB() {
-        let url = "/api/userData/?id=" + user;
+        let url = "/api/userData/?id=" + user.id;
 
         let userData = await fetch(url, {
             method: "PUT",
@@ -23,7 +23,7 @@ export default function Signup() {
             }),
         });
 
-        url = "/api/user/?id=" + user;
+        url = "/api/user/?id=" + user.id;
         let createCheckings = await fetch(url, {
             method: "POST",
             headers: {'Content-Type': 'application/json'},
