@@ -1,6 +1,7 @@
 import Head from 'next/head'
 //import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Link from "next/link";
 //import Button from "../components/button";
 
 export default function aboutus() {
@@ -13,7 +14,7 @@ export default function aboutus() {
 
             <main className={styles.main}>
                 <h1 className={styles.title}>
-                    "F" is for Friends who builds apps together!
+                    `&quot;`F`&quot;` is for Friends who builds apps together!
                 </h1>
 
 
@@ -23,7 +24,7 @@ export default function aboutus() {
                 </p>
 
                 <h2>The Big Bank of Butt was created by a group of 7 hardworking individuals.<br/><br /></h2>
-                <h2>The ISE's:<br/></h2>
+                <h2>The ISE&apos;s:<br/></h2>
 
                 <div className={styles.grid}>
                     <a href="" className={styles.card}>
@@ -48,7 +49,7 @@ export default function aboutus() {
 
                 </div>
 
-                <h2>The SE's:<br/></h2>
+                <h2>The SE&apos;s:<br/></h2>
 
                 <div className={styles.grid}>
                     <a href="" className={styles.card}>
@@ -58,12 +59,12 @@ export default function aboutus() {
 
                     <a href= "" className={styles.card}>
                         <h2>Jeniffer Ngo</h2>
-                        <p>Sophomore SE Major who is as good at slaying in Valorant as she is at building functional API's.</p>
+                        <p>Junior(?) SE Major who is as good at slaying in Valorant as she is at building functional API&apos;s.</p>
                     </a>
 
                     <a href= "" className={styles.card}>
                         <h2>Greg Jaugan</h2>
-                        <p>Sophomore SE Major who has as much rizz as he does incredible skill at building API's, that sexy MF.</p>
+                        <p>Junior(?) SE Major who has as much rizz as he does incredible skill at building API&apos;s, that sexy MF.</p>
                     </a>
 
 
@@ -72,8 +73,7 @@ export default function aboutus() {
             </main>
 
             <footer className={styles.footer}>
-                <a
-                    href="/">Take Me Home</a>
+                <Link href="/">Take Me Home</Link>
             </footer>
         </div>
     )

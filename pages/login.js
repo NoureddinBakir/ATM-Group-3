@@ -1,6 +1,7 @@
 import Button from "../components/button";
 import styles from '../styles/Home.module.css';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
+import Link from "next/link";
 
 export default function Login() {
     const supabase = useSupabaseClient();
@@ -8,12 +9,9 @@ export default function Login() {
         const { data, error } = await supabase.auth.signInWithOtp({
             email: document.getElementById("email").value,
             options: {
-                emailRedirectTo: 'http://localhost:3000/redirect',
+                emailRedirectTo: 'localhost:3000',
             },
         })
-        if(error) {
-            console.log(error);
-        }
     }
 
     return (
@@ -32,10 +30,10 @@ export default function Login() {
                     </div>
                     <div className={styles.cardFooter}>
                         <p>
-                            <a>Don't have an account? Just enter your email!</a>
+                            <Link href="/register">Don&apos;t have an account? Register here!</Link>
                         </p>
                         <p>
-                            <a href="/support">Need more help? Click Here!</a>
+                            <Link href="/support">Need more help? Click Here!</Link>
                         </p>
                     </div>
                 </div>

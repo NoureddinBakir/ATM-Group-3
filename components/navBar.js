@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
-
+import Link from "next/link";
 export default function NavBar () {
     const [wid, setWid] = useState('0%');
     const openNavBar = () => {
@@ -22,41 +22,25 @@ export default function NavBar () {
                 </button>
 
                 <div className={styles.NavBarButton}>
-                    <img src={'/user.png'}/>
-                    <a href="/home">Account Details</a>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <Link href="/home">Account Details</Link>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'/paper.png'}/>
-                    <a href="/transactions">Transactions</a>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <Link href="/transactions">Transactions</Link>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'/cloud-computing.png'}/>
-                    <a href="/deposit">Deposit</a>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <Link href="/transfer">Transfer</Link>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'/send-money.png'}/>
-                    <a href="/sendmoney">Send Money</a>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <Link href="/deposit">Deposit</Link>
                 </div>
                 <div className={styles.NavBarButton}>
-                    <img src={'/two-arrows.png'}/>
-                    <a href="/transfer">Transfer Money</a>
+                    <img src={'https://static.vecteezy.com/system/resources/previews/015/577/233/original/face-with-big-eyes-large-size-of-yellow-emoji-smile-free-vector.jpg'}/>
+                    <Link href="/logout">Logout</Link>
                 </div>
-                <div className={styles.NavBarButton}>
-                    <img src={'/skills.png'}/>
-                    <a href="/manageaccounts">Manage Accounts</a>
-                </div>
-
-                <div style={{marginTop: "auto"}}>
-                    <div className={styles.NavBarButton}>
-                        <img src={'/info.png'}/>
-                        <a href={"/aboutus"}>About Us</a>
-                    </div>
-                    <div className={styles.NavBarButton}>
-                        <img src={'/exit.png'}/>
-                        <a href="/logout">Logout</a>
-                    </div>
-                </div>
-
             </div>
         </div>
     )
