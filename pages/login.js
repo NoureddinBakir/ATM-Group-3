@@ -8,7 +8,7 @@ export default function Login() {
         const { data, error } = await supabase.auth.signInWithOtp({
             email: document.getElementById("email").value,
             options: {
-                emailRedirectTo: 'http://localhost:3000/redirect',
+                emailRedirectTo: 'https://atm-group-3.vercel.app/redirect',
             },
         })
         if(error) {
