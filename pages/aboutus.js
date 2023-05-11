@@ -58,12 +58,12 @@ export default function aboutus() {
 
                     <a href= "" className={styles.card}>
                         <h2>Jeniffer Ngo</h2>
-                        <p>Junior(?) SE Major who is as good at slaying in Valorant as she is at building functional API's.</p>
+                        <p>Sophomore SE Major who is as good at slaying in Valorant as she is at building functional API's.</p>
                     </a>
 
                     <a href= "" className={styles.card}>
                         <h2>Greg Jaugan</h2>
-                        <p>Junior(?) SE Major who has as much rizz as he does incredible skill at building API's, that sexy MF.</p>
+                        <p>Sophomore SE Major who has as much rizz as he does incredible skill at building API's, that sexy MF.</p>
                     </a>
 
 

@@ -45,11 +45,18 @@ export default function NavBar () {
                     <img src={'/skills.png'}/>
                     <a href="/manageaccounts">Manage Accounts</a>
                 </div>
-                
-                <div className={styles.NavBarButton}>
-                    <img src={'/exit.png'}/>
-                    <a href="/logout">Logout</a>
+
+                <div style={{marginTop: "auto"}}>
+                    <div className={styles.NavBarButton}>
+                        <img src={'/info.png'}/>
+                        <a href={"/aboutus"}>About Us</a>
+                    </div>
+                    <div className={styles.NavBarButton}>
+                        <img src={'/exit.png'}/>
+                        <a href="/logout">Logout</a>
+                    </div>
                 </div>
+
             </div>
         </div>
     )
