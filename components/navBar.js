@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "../styles/Home.module.css";
+import Link from "next/link";
 
 export default function NavBar () {
     const [wid, setWid] = useState('0%');
@@ -23,37 +24,31 @@ export default function NavBar () {
 
                 <div className={styles.NavBarButton}>
                     <img src={'/user.png'}/>
-                    <a href="/home">Account Details</a>
+                    <Link href="/home">Account Details</Link>
                 </div>
-                <div className={styles.NavBarButton}>
-                    <img src={'/paper.png'}/>
-                    <a href="/transactions">Transactions</a>
-                </div>
+
                 <div className={styles.NavBarButton}>
                     <img src={'/cloud-computing.png'}/>
-                    <a href="/deposit">Deposit</a>
+                    <Link href="/deposit">Deposit</Link>
                 </div>
-                <div className={styles.NavBarButton}>
-                    <img src={'/send-money.png'}/>
-                    <a href="/sendmoney">Send Money</a>
-                </div>
+
                 <div className={styles.NavBarButton}>
                     <img src={'/two-arrows.png'}/>
-                    <a href="/transfer">Transfer Money</a>
+                    <Link href="/transfer">Transfer Money</Link>
                 </div>
                 <div className={styles.NavBarButton}>
                     <img src={'/skills.png'}/>
-                    <a href="/manageaccounts">Manage Accounts</a>
+                    <Link href="/manageaccounts">Manage Accounts</Link>
                 </div>
 
                 <div style={{marginTop: "auto"}}>
                     <div className={styles.NavBarButton}>
                         <img src={'/info.png'}/>
-                        <a href={"/aboutus"}>About Us</a>
+                        <Link href={"/aboutus"}>About Us</Link>
                     </div>
                     <div className={styles.NavBarButton}>
                         <img src={'/exit.png'}/>
-                        <a href="/logout">Logout</a>
+                        <Link href="/logout">Logout</Link>
                     </div>
                 </div>
 

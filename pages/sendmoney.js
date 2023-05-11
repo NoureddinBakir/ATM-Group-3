@@ -32,21 +32,20 @@ export default function Transfermoney() {
     const [dataRefresh, setDataRefresh] = useState(true);
 
     const router = useRouter();
+    const user = useUser();
+    const supabase = useSupabaseClient();
 
-
-
-    if(useUser() == null) {
+    if(user == null) {
         return <Index/>;
     }
-    const user = useUser().id;
 
 
-    const supabase = useSupabaseClient();
+
+
 
     // Fetch the user data, can be copied to each page that accesses user data
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };

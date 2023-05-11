@@ -16,7 +16,7 @@ export default function ATMError() {
             <div className={styles.pageContainer}>
                 <div className={styles.paddingCard}>
                     <div className={styles.contentCard}>
-                        <h2 className={styles.sectionTitle}>You don't have a checkings account!</h2>
+                        <h2 className={styles.sectionTitle}>You don&apos;t have a checkings account!</h2>
                         <h2 className={styles.helperText}>Please create a checkings account on our website</h2>
                         <Button type={"primary"} text={"Logout"} onClick={() => {
                             router.push("/logout");

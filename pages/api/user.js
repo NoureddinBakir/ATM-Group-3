@@ -69,6 +69,12 @@ export default async function handler(req, res) {
                 .from("accounts")
                 .delete()
                 .eq('id', delID);
+            if (error) {
+                res.status(500).json({ error: "An error occured while deleting account." });
+            }
+            else {
+                res.status(200).send("Successfully deleted account");
+            }
         } catch (error) {
             res.status(500).json({error: "An error occured while deleting account."});
         }

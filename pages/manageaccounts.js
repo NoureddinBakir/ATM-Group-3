@@ -10,6 +10,7 @@ import { Dropdown } from "@nextui-org/react";
 
 export default function ManageAccounts() {
     const router = useRouter();
+    let user = useUser();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
 
@@ -24,13 +25,12 @@ export default function ManageAccounts() {
         [dropSelected]
     );
 
-    if(useUser() == null) {
+    if(user == null) {
         return <Index/>;
     }
 
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };
@@ -85,7 +85,6 @@ export default function ManageAccounts() {
         },
     ]
 
-    const user = useUser().id;
 
     async function createNewAccount(type, id) {
         let url = "/api/user/?id=" + id;
@@ -113,6 +112,9 @@ export default function ManageAccounts() {
                     id: foundAccount.apiKey,
                 })
             })
+            if(userData.ok) {
+                router.push('/');
+            }
         }
     }
 
@@ -169,7 +171,7 @@ export default function ManageAccounts() {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Button type={"primary"} text={"Delete"} onClick={() => {
-                        deleteAccount(selectedValue).then(result => {router.push("/")});
+                        deleteAccount(selectedValue);
                     }}/>
                 </div>
 
@@ -190,7 +192,12 @@ export default function ManageAccounts() {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Button type={"primary"} text={"Create Account"} onClick={() => {
-                        createNewAccount(dropSelectedValue, user).then(result => {router.push("/")});
+                        if(dropSelectedValue === "Choose an Account Type") {
+                            alert("Please select an account type! Click esc to continue.");
+                        }
+                        else {
+                            createNewAccount(dropSelectedValue, user.id).then(result => {router.push("/")});
+                        }
                     }}/>
                 </div>
 

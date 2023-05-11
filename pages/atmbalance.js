@@ -11,6 +11,7 @@ import {Table} from "@nextui-org/react";
 
 export default function ATMBalance() {
     let router = useRouter();
+    let user = useUser();
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
     if(useUser() == null) {
@@ -19,8 +20,7 @@ export default function ATMBalance() {
 
     // Fetch the user data, can be copied to each page that accesses user data
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };

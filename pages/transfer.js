@@ -21,21 +21,21 @@ export default function Transfer() {
         [secondSelected]
     );
 
-
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
 
-    if(useUser() == null) {
+
+    const user = useUser();
+    const router = useRouter();
+    if(user == null) {
         return <Index/>;
     }
 
-    const user = useUser().id;
-    const router = useRouter();
+
 
     // Fetch the user accounts
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };

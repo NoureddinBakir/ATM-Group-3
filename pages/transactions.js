@@ -11,15 +11,15 @@ import Index from "./index";
 export default function Transactions() {
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
+    let user = useUser();
 
-    if(useUser() == null) {
+    if(user == null) {
         return <Index/>;
     }
 
     // Fetch the user data, can be copied to each page that accesses user data
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };

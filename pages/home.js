@@ -11,20 +11,20 @@ import { Table } from '@nextui-org/react';
 
 export default function Home() {
     const router = useRouter();
+    let user = useUser()
     const [data, setData] = useState(null);
     const [dataRefresh, setDataRefresh] = useState(true);
     const [userData, setUserData] = useState(null);
     const [userDataRefresh, setUserDataRefresh] = useState(true);
 
     // Check if user signed in
-    if(useUser() == null) {
+    if(user == null) {
         return <Index/>;
     }
 
     // Fetch user accounts
     const fetchData = async () => {
-        let user = useUser().id;
-        let url = "/api/user/?id=" + user;
+        let url = "/api/user/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };
@@ -44,8 +44,7 @@ export default function Home() {
 
     // Fetch user data
     const fetchUserData = async () => {
-        let user = useUser().id;
-        let url = "/api/userData/?id=" + user;
+        let url = "/api/userData/?id=" + user.id;
         let userData = await fetch(url)
         return userData.json();
     };
@@ -74,47 +73,6 @@ export default function Home() {
             label: "Balance",
         },
     ]
-    const columnsB =[
-        {
-            key: "description",
-            label: "Description",
-        },
-        {
-            key: "amount",
-            label: "Amount",
-        },
-        {
-            key: "date",
-            label: "Date",
-        },
-
-    ];
-    const rowsB = [
-        {
-            key: "1",
-            description: "Deposit",
-            amount: "$1,295.39",
-            date: "12-1-22",
-        },
-        {
-            key: "2",
-            description: "Transfer",
-            amount: "$0.01",
-            date: "11-2-22",
-        },
-        {
-            key: "3",
-            description: "Withdrawal",
-            amount: "$27.34",
-            date: "10-10-22",
-        },
-        {
-            key: "4",
-            description: "Transfer",
-            amount: "$1,000.01",
-            date: "10-1-22",
-        },
-    ];
 
     // Initialize account data
     let rowsA = [];
@@ -191,33 +149,6 @@ export default function Home() {
                     </Table.Body>
                 </Table>
 
-                <div className={styles.sectionTitle}>
-                    <h2>
-                        Latest Transactions
-                    </h2>
-                </div>
-
-                <Table
-                    aria-label="Example table with dynamic content"
-                    css={{
-                        height: "auto",
-                        minWidth: "100%",
-                        zIndex: "10",
-                    }}
-                >
-                    <Table.Header columns={columnsB}>
-                        {(column) => (
-                            <Table.Column key={column.key}>{column.label}</Table.Column>
-                        )}
-                    </Table.Header>
-                    <Table.Body items={rowsB}>
-                        {(item) => (
-                            <Table.Row key={item.key}>
-                                {(columnKey) => <Table.Cell>{item[columnKey]}</Table.Cell>}
-                            </Table.Row>
-                        )}
-                    </Table.Body>
-                </Table>
             </main>
         </div>
     );
